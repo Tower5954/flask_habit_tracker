@@ -5,9 +5,12 @@ app = Flask(__name__)
 habits = ["Test habit", "Test habit 2", "Test habit 3"]
 
 
-def date_range(start: datetime.date):
-    dates = [start + datetime.timedelta(days=diff) for diff in range(-3, 4)]
-    return dates
+@app.context_processor
+def add_calc_date_range():
+    def date_range(start: datetime.date):
+        dates = [start + datetime.timedelta(days=diff) for diff in range(-3, 4)]
+        return dates
+    return {"date_range": date_range}
 
 
 @app.route("/")
@@ -22,7 +25,6 @@ def index():
         "index.html",
         habits=habits,
         title="Habit Tracker - Home",
-        date_range=date_range,
         selected_date=selected_date
     )
 
@@ -31,4 +33,7 @@ def index():
 def add_habit():
     if request.method == "POST":
         habits.append(request.form.get("habit"))
-    return render_template("add_habit.html", title="Habit Tracker - Add Habit")
+    return render_template("add_habit.html",
+                           title="Habit Tracker - Add Habit",
+                           selected_date=datetime.date.today(),
+                           )
