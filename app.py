@@ -2,7 +2,7 @@ import datetime
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
-habits = ["Test habit", "Test habit 2", "Test habit 3"]
+jobs = ["Test habit", "Test habit 2", "Test habit 3"]
 
 
 @app.context_processor
@@ -23,17 +23,17 @@ def index():
 
     return render_template(
         "index.html",
-        habits=habits,
-        title="Habit Tracker - Home",
+        jobs=jobs,
+        title="Job list - Home",
         selected_date=selected_date
     )
 
 
 @app.route("/add", methods=["GET", "POST"])
-def add_habit():
+def add_job():
     if request.method == "POST":
-        habits.append(request.form.get("habit"))
-    return render_template("add_habit.html",
-                           title="Habit Tracker - Add Habit",
+        jobs.append(request.form.get("job"))
+    return render_template("add_job.html",
+                           title="Job list - Add Job",
                            selected_date=datetime.date.today(),
                            )
