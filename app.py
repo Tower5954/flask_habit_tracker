@@ -1,8 +1,10 @@
 import datetime
-from flask import Flask, render_template, request
+from collections import defaultdict
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 jobs = ["Test habit", "Test habit 2", "Test habit 3"]
+completions = defaultdict(list)
 
 
 @app.context_processor
@@ -24,6 +26,7 @@ def index():
     return render_template(
         "index.html",
         jobs=jobs,
+        completions=completions[selected_date],
         title="Job list - Home",
         selected_date=selected_date
     )
@@ -37,3 +40,13 @@ def add_job():
                            title="Job list - Add Job",
                            selected_date=datetime.date.today(),
                            )
+
+
+@app.route("/complete", methods=["POST"])
+def complete():
+    date_string = request.form.get("date")
+    job = request.form.get("jobName")
+    date = datetime.date.fromisoformat(date_string)
+    completions[date].append(job)
+
+    return redirect(url_for("index", date=date_string))
