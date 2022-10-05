@@ -132,3 +132,35 @@ body {
     border-radius: 6px;
 }
 
+.job:not(.completed) {
+    padding: 0;
+}
+
+.job:not(.completed):hover {
+    background-color: #e9cd87;
+}
+
+.job__icon {
+    width: 1em;
+    height: 1em;
+}
+
+.job__name {
+    margin: 0;
+}
+
+.job__form {
+    width: 100%
+}
+
+.job__button {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    font-size: inherit;
+    font-family: inherit;
+    text-align: left;
+    border: none;
+    background-color: unset;
+    cursor: pointer;
+}
