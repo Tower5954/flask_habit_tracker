@@ -4,11 +4,25 @@
 
     <section class="habit-list">
         {% for job in jobs %}
-            <div class="job">
-                <p class="habit__name">
-                    {{ job }}
-                </p>
-            </div>
+            {% set completed = job in completions %}
+            {% if completed %}
+                <div class="job completed">
+                    <p class="job__name">
+                        {{ job }}
+                    </p>
+                    <img src="static/sign-check.svg"/>
+                </div>
+            {% else %}
+                <div class="job">
+                    <form method="POST" class="job__form" action="{{ url_for('complete') }}">
+                        <input type="hidden" name="jobName" value="{{ job }}" />
+                        <input type="hidden" name="date" value="{{ selected_date }}" />
+                        <button type="submit" class="job__button">
+                            {{ job }}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
         {% endfor %}
     </section>
 {% endblock %}
