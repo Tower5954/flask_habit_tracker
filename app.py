@@ -1,52 +1,9 @@
-import datetime
-from collections import defaultdict
-from flask import Flask, render_template, request, redirect, url_for
-
-app = Flask(__name__)
-jobs = ["Test habit", "Test habit 2", "Test habit 3"]
-completions = defaultdict(list)
+from flask import Flask
+from routes import pages
 
 
-@app.context_processor
-def add_calc_date_range():
-    def date_range(start: datetime.date):
-        dates = [start + datetime.timedelta(days=diff) for diff in range(-3, 4)]
-        return dates
-    return {"date_range": date_range}
+def create_app():
+    app = Flask(__name__)
+    app.register_blueprint(pages)
 
-
-@app.route("/")
-def index():
-    date_str = request.args.get("date")
-    if date_str:
-        selected_date = datetime.date.fromisoformat(date_str)
-    else:
-        selected_date = datetime.date.today()
-
-    return render_template(
-        "index.html",
-        jobs=jobs,
-        completions=completions[selected_date],
-        title="Job list - Home",
-        selected_date=selected_date
-    )
-
-
-@app.route("/add", methods=["GET", "POST"])
-def add_job():
-    if request.method == "POST":
-        jobs.append(request.form.get("job"))
-    return render_template("add_job.html",
-                           title="Job list - Add Job",
-                           selected_date=datetime.date.today(),
-                           )
-
-
-@app.route("/complete", methods=["POST"])
-def complete():
-    date_string = request.form.get("date")
-    job = request.form.get("jobName")
-    date = datetime.date.fromisoformat(date_string)
-    completions[date].append(job)
-
-    return redirect(url_for("index", date=date_string))
+    return app

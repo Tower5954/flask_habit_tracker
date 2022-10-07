@@ -14,7 +14,7 @@
                 </div>
             {% else %}
                 <div class="job">
-                    <form method="POST" class="job__form" action="{{ url_for('complete') }}">
+                    <form method="POST" class="job__form" action="{{ url_for('jobs.complete') }}">
                         <input type="hidden" name="jobName" value="{{ job }}" />
                         <input type="hidden" name="date" value="{{ selected_date }}" />
                         <button type="submit" class="job__button">
