@@ -4,21 +4,21 @@
 
     <section class="habit-list">
         {% for job in jobs %}
-            {% set completed = job in completions %}
+            {% set completed = job["_id"] in completions %}
             {% if completed %}
                 <div class="job completed">
                     <p class="job__name">
-                        {{ job }}
+                        {{ job["name"] }}
                     </p>
                     <img src="static/sign-check.svg" class="job__icon"/>
                 </div>
             {% else %}
                 <div class="job">
                     <form method="POST" class="job__form" action="{{ url_for('jobs.complete') }}">
-                        <input type="hidden" name="jobName" value="{{ job }}" />
+                        <input type="hidden" name="jobId" value="{{ job['_id'] }}" />
                         <input type="hidden" name="date" value="{{ selected_date }}" />
                         <button type="submit" class="job__button">
-                            {{ job }}
+                            {{ job["name"] }}
                         </button>
                     </form>
                 </div>
